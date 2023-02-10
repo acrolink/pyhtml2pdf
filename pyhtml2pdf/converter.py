@@ -62,10 +62,20 @@ def __get_pdf_from_html(
     webdriver_prefs = {}
     driver = None
 
+    webdriver_options.binary_location = '/opt/chrome/chrome'
     webdriver_options.add_argument("--headless")
     webdriver_options.add_argument("--disable-gpu")
     webdriver_options.add_argument("--no-sandbox")
     webdriver_options.add_argument("--disable-dev-shm-usage")
+    webdriver_options.add_argument("--single-process")
+    webdriver_options.add_argument("--disable-application-cache")
+    webdriver_options.add_argument("--disable-infobars")
+    webdriver_options.add_argument("--ignore-certificate-errors")
+    webdriver_options.add_argument("--enable-logging")
+    webdriver_options.add_argument("--log-level=0")
+    webdriver_options.add_argument("--homedir=/tmp")
+    webdriver_options.add_argument("--disable-setuid-sandbox")
+    webdriver_options.add_argument("--no-first-run")
     webdriver_options.experimental_options["prefs"] = webdriver_prefs
 
     webdriver_prefs["profile.default_content_settings"] = {"images": 2}
