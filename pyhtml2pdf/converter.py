@@ -63,6 +63,7 @@ def __get_pdf_from_html(
     driver = None
 
     webdriver_options.binary_location = '/opt/google/chrome'
+    webdriver_options.page_load_strategy = 'none'
     webdriver_options.add_argument("--headless")
     webdriver_options.add_argument("--disable-gpu")
     webdriver_options.add_argument("--no-sandbox")
