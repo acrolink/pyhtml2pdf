@@ -10,6 +10,7 @@ from selenium.webdriver.support.expected_conditions import staleness_of
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.core.utils import ChromeType
 
 from .compressor import __compress
 
