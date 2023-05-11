@@ -9,9 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.core.utils import ChromeType
-
+# from selenium.webdriver.chrome.service import Service
+# from webdriver_manager.core.utils import ChromeType
 from .compressor import __compress
 
 
@@ -60,7 +59,7 @@ def __send_devtools(driver, cmd, params={}):
 def __get_pdf_from_html(
     path: str, timeout: int, install_driver: bool, print_options: dict
 ):
-    chrome_driver_service = Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
+    # chrome_driver_service = Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     webdriver_options = Options()
     webdriver_prefs = {}
     driver = None
@@ -111,5 +110,5 @@ def __get_pdf_from_html(
         driver.stop_client()
         driver.close()
         driver.quit()
-        chrome_driver_service.stop()
+        # chrome_driver_service.stop()
         return base64.b64decode(result["data"])
