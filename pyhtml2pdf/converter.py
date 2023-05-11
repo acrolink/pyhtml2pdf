@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import staleness_of
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
 from .compressor import __compress
 
@@ -58,6 +59,7 @@ def __send_devtools(driver, cmd, params={}):
 def __get_pdf_from_html(
     path: str, timeout: int, install_driver: bool, print_options: dict
 ):
+    chrome_driver_service = Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     webdriver_options = Options()
     webdriver_prefs = {}
     driver = None
@@ -76,6 +78,7 @@ def __get_pdf_from_html(
     webdriver_options.add_argument("--homedir=/tmp")
     webdriver_options.add_argument("--disable-setuid-sandbox")
     webdriver_options.add_argument("--no-first-run")
+    webdriver_options.add_argument("--remote-debugging-port=9230")
     webdriver_options.experimental_options["prefs"] = webdriver_prefs
 
     webdriver_prefs["profile.default_content_settings"] = {"images": 2}
@@ -86,8 +89,9 @@ def __get_pdf_from_html(
         )
     else:
         driver = webdriver.Chrome(options=webdriver_options)
-
+    driver.maximize_window()
     driver.get(path)
+    driver.implicitly_wait(5)
 
     try:
         WebDriverWait(driver, timeout).until(
@@ -103,5 +107,8 @@ def __get_pdf_from_html(
         calculated_print_options.update(print_options)
         result = __send_devtools(
             driver, "Page.printToPDF", calculated_print_options)
+        driver.stop_client()
+        driver.close()
         driver.quit()
+        chrome_driver_service.stop()
         return base64.b64decode(result["data"])
